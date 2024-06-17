@@ -43,7 +43,7 @@ ngOnInit(): void {
 
   onSubmit(): void {
     if (this.isSubmitting) {
-      return; // Prevent duplicate form submission
+      return;
     }
 
     if (this.confirmPassword !== this.newUser.password) {
@@ -53,12 +53,10 @@ ngOnInit(): void {
         progressBar: true,
         positionClass: 'toast-top-right',
       });
-      return; // Password confirmation check
+      return;
     }
 
-    // Additional form validation checks
-
-    this.isSubmitting = true; // Set submitting flag to true
+    this.isSubmitting = true;
 
     const formData: FormData = new FormData();
     formData.append('cin', this.newUser.cin);
@@ -72,26 +70,29 @@ ngOnInit(): void {
     if (this.selectedFile) {
       formData.append('img', this.selectedFile, this.selectedFile.name);
     }
-  
-    this.userService.signup(formData).subscribe(response => { 
-      this.toastr.success("Inscription réussie. Veuillez vérifier votre email pour activer votre compte.", 'Signup', {
-        timeOut: 5000,
-        closeButton: true,
-        progressBar: true,
-        positionClass: 'toast-top-right',
-      });      
-      console.log('User signed up successfully', response);
-      this.router.navigate(['/login']);
-      this.resetForm(); // Reset form state
-    }, error => {
-      this.toastr.error('Enregistrement échoué', 'Sign up', {
-        timeOut: 5000,
-        closeButton: true,
-        progressBar: true,
-        positionClass: 'toast-top-right',
-      });
-      console.error('Error signing up user', error);
-      this.isSubmitting = false; // Reset submitting flag
+
+    this.userService.signup(formData).subscribe({
+      next: response => {
+        this.toastr.success("Inscription réussie. Veuillez vérifier votre email pour activer votre compte.", 'Signup', {
+          timeOut: 5000,
+          closeButton: true,
+          progressBar: true,
+          positionClass: 'toast-top-right',
+        });
+        console.log('User signed up successfully', response);
+        this.router.navigate(['/login']);
+        this.resetForm(); // Reset form state
+      },
+      error: errorMessage => {
+        this.toastr.error(errorMessage, 'Sign up', {
+          timeOut: 5000,
+          closeButton: true,
+          progressBar: true,
+          positionClass: 'toast-top-right',
+        });
+        console.error('Error signing up user', errorMessage);
+        this.isSubmitting = false; // Reset submitting flag
+      }
     });
   }
   resetForm(): void {

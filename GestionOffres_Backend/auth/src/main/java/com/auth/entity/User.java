@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "cin")})
 public class User implements UserDetails {
 
 	@Id
@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private Date tokenCreationDate;
     private boolean isEmailVerified;
     private String email;
+    @Column(unique = true)
     private String cin;
     private Date datenais;
     private String lieunais;

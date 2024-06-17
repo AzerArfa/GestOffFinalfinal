@@ -111,7 +111,6 @@ userDto.setRoles(roleDtos);
 public UserDto createUser(SignupRequest signupRequest) {
     Password initialPassword = new Password();
 
-    // Email validation
     String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     Pattern pattern = Pattern.compile(emailRegex);
     Matcher matcher = pattern.matcher(signupRequest.getEmail());
@@ -119,31 +118,26 @@ public UserDto createUser(SignupRequest signupRequest) {
     if (!matcher.matches()) {
         throw new IllegalArgumentException("Invalid email format");
     }
-
-    // Check if email already exists
     if (userRepository.existsByEmail(signupRequest.getEmail())) {
-        throw new IllegalArgumentException("Email already exists");
+        throw new IllegalArgumentException("L'email existe déjà");
     }
 
-    // CIN validation
     String cin = signupRequest.getCin();
     if (cin == null || !cin.matches("\\d{8}")) {
-        throw new IllegalArgumentException("CIN must be exactly 8 digits");
+        throw new IllegalArgumentException("Le CIN doit contenir exactement 8 chiffres");
     }
 
-    // Password length validation
     String password = signupRequest.getPassword();
     if (password == null || password.length() < 8) {
-        throw new IllegalArgumentException("Password must be exactly 8 characters long");
+        throw new IllegalArgumentException("Le mot de passe doit comporter plus de 8 caractères");
     }
 
-    // Date of birth validation
     Date datenais = signupRequest.getDatenais();
     Calendar calendar = Calendar.getInstance();
     calendar.add(Calendar.YEAR, -18);
     Date cutoffDate = calendar.getTime();
     if (datenais == null || !datenais.before(cutoffDate)) {
-        throw new IllegalArgumentException("User must be older than 18 years");
+        throw new IllegalArgumentException("L'utilisateur doit être âgé de plus de 18 ans.");
     }
 
     User user = new User();

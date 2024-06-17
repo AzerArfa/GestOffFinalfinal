@@ -113,10 +113,21 @@ login(user: any): Observable<HttpResponse<any>> {
     })
   );
 }
-
+private handleError(error: any): Observable<never> {
+  let errorMessage = 'An unknown error occurred!';
+  if (error.error instanceof ErrorEvent) {
+    // Client-side errors
+    errorMessage = `Error: ${error.error.message}`;
+  } else if (error.error) {
+    // Server-side errors
+    errorMessage = error.error;
+  }
+  return throwError(() => new Error(errorMessage));
+}
 
   register(user: User): Observable<User> {
     return this.http.post<User>(`${authApiURL}/signup`, user).pipe(
+      catchError(this.handleError),
       tap(() => {
         this.toastr.success('Registration successful. Please check your email to verify your account.', 'Sign Up', {
           timeOut: 5000,

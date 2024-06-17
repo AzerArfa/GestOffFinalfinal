@@ -45,7 +45,7 @@
                 <tr *ngFor="let request of paginatedjoinRequests">
                   <td (click)="openRequestDialog(request)">
                     {{ request.userPrenom }} {{ request.userName }} veux
-                    rejoindre votre entreprise
+                    rejoindre votre entreprise "{{request.entrepriseName}}"
                   </td>
                   <td>
                     <button

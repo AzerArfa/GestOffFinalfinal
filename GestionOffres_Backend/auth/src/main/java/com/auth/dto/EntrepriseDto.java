@@ -23,4 +23,6 @@ public class EntrepriseDto {
 	    private byte[] returnedImg;
 	    private byte[] codetvadocument;
 	    private byte[] status;
+	    
+	    
 }

@@ -52,8 +52,24 @@ export class UserService {
     return this.http.post<User>(authApiURL + "/signup", user, { headers: httpHeaders });
   }
 
+ 
   signup(formData: FormData): Observable<User> {
-    return this.http.post<User>(authApiURL + '/signup', formData)
+    return this.http.post<User>(`${authApiURL}/signup`, formData)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  private handleError(error: any): Observable<never> {
+    let errorMessage = 'An unknown error occurred!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = ` ${error.error.message}`;
+    } else {
+      // Server-side error
+      errorMessage = `${error.error}`;
+    }
+    return throwError(errorMessage);
   }
   
    addEntreprise(userId: string, formData: FormData): Observable<any> {
@@ -121,7 +137,9 @@ updateUser(id: string, formData: FormData): Observable<any> {
 }
 
 
-
+getEntrepriseByMatricule(matricule: string): Observable<Entreprise> {
+  return this.http.get<Entreprise>(`${authApiURL}/admin/entreprise/matricule/${matricule}`, { headers: this.getAuthHeaders() });
+}
 
 
 

@@ -4,6 +4,8 @@ import com.auth.dto.AuthenticationRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.auth.dto.ChangePasswordDto;
 import com.auth.dto.EntrepriseDto;
@@ -18,6 +20,7 @@ import com.auth.entity.Notification;
 import com.auth.entity.Password;
 import com.auth.entity.Role;
 import com.auth.entity.User;
+import com.auth.exceptions.DuplicateCinException;
 import com.auth.exceptions.UserNotFoundException;
 import com.auth.repository.UserRepository;
 import com.auth.services.auth.AuthService;
@@ -173,6 +176,8 @@ public class AuthController {
 	  }
 
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
 	  @PostMapping(value = "/signup", consumes = "multipart/form-data")
 	  public ResponseEntity<?> signupUser(
 	            @RequestParam(value = "email", required = true) String email,
@@ -198,10 +203,18 @@ public class AuthController {
 
 	          return ResponseEntity.ok(userDto);
 	      } catch (IOException e) {
-	          return ResponseEntity.status(500).body("Error processing image");
-	      } catch (Exception e) {
-	          return ResponseEntity.status(500).body("Error creating user");
-	      }
+	            logger.error("Error processing image", e);
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing image");
+	        } catch (DuplicateCinException e) {
+	            logger.error("Duplicate CIN error", e);
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	        } catch (IllegalArgumentException e) {
+	            logger.error("Validation error", e);
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	        } catch (Exception e) {
+	            logger.error("Error creating user", e);
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+	        }
 	  }
 	  @GetMapping("/requestsbyuserid/{userId}")
 	    public List<DemandeAjoutEntreprise> getRequestsByUserId(@PathVariable UUID userId) {
@@ -836,4 +849,18 @@ public ResponseEntity<byte[]> downloadStatusDocument(@PathVariable UUID id) {
 	        entrepriseService.removeUserFromEntreprise(entrepriseId, userId);
 	        return ResponseEntity.noContent().build();
 	    }
+	    
+	    @GetMapping("/admin/entreprise/matricule/{matricule}")
+	    public ResponseEntity<EntrepriseDto> getEntrepriseByMatricule(@PathVariable String matricule) {
+	        Optional<Entreprise> entrepriseOptional = entrepriseService.findByMatricule(matricule);
+	        if (entrepriseOptional.isPresent()) {
+	            Entreprise entreprise = entrepriseOptional.get();
+	            EntrepriseDto entrepriseDto = entrepriseService.convertToDto(entreprise);
+	            return ResponseEntity.ok(entrepriseDto);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+	    }
+
+
 }

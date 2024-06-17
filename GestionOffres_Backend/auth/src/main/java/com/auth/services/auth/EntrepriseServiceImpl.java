@@ -44,7 +44,10 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         entrepriseRepository.save(entreprise);
         userRepository.save(user); // Save the user to update the changes
     }
-
+    @Override
+    public Optional<Entreprise> findByMatricule(String matricule) {
+        return entrepriseRepository.findByMatricule(matricule);
+    }
     @Transactional
     @Override
     public Entreprise createEntreprise(EntrepriseDto entrepriseDto) {
@@ -131,8 +134,8 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             .map(this::convertToDto)
             .collect(Collectors.toList());
     }
-
-    private EntrepriseDto convertToDto(Entreprise entreprise) {
+@Override
+    public EntrepriseDto convertToDto(Entreprise entreprise) {
         EntrepriseDto dto = new EntrepriseDto();
         dto.setId(entreprise.getId());
         dto.setName(entreprise.getNom());

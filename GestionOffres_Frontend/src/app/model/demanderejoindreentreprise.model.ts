@@ -1,7 +1,7 @@
 export class DemandeRejoindreEntreprise{
     id!: string;
     userId!:string; 
-    userName!: string;  // Assuming these fields are added
+    userName!: string; 
     userCIN!: string;
     userImg!: string;
     userDatenais!:Date;
@@ -9,4 +9,5 @@ export class DemandeRejoindreEntreprise{
     userPrenom!:string;
     status!:string;
     entrepriseMatricule!:string;
+    entrepriseName!:string;
 }

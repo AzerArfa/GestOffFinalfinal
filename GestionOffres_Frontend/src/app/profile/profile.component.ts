@@ -14,6 +14,7 @@
   import { EntrepriseRequestDialogComponent } from '../entreprise-request-dialog/entreprise-request-dialog.component';
   import { PasswordUpdateDialogComponent } from '../password-update-dialog/password-update-dialog.component';
   import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Entreprise } from '../model/entreprise.model';
 
   @Component({
     selector: 'app-profile',
@@ -37,6 +38,7 @@
     paginatedsortedList: any[] = [];
     remainingDays: number | null = null;
 
+    entreprise!: Entreprise;
 
     @ViewChild("MatPaginator1") paginator!: MatPaginator;
     @ViewChild("MatPaginator2") paginator1!: MatPaginator;
@@ -268,6 +270,9 @@
         next: (requests) => {
           this.joinRequests = requests;
           this.joinRequests.forEach(request => {
+            this.userService.getEntrepriseByMatricule(request.entrepriseMatricule).subscribe(entreprise => {
+              request.entrepriseName = entreprise.name;
+            });
             this.userService.getUserById(request.userId).subscribe(user => {
               request.userName = user.name;
               request.userPrenom = user.prenom;
@@ -438,6 +443,7 @@
         pageIndex * pageSize + pageSize
       );
     }
+
     filterEntreprises(): void {
       const searchTermLower = this.searchTerm.toLowerCase();
       this.paginatedsortedList = this.sortedList.filter(item =>

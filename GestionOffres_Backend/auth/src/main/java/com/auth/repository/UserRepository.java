@@ -31,5 +31,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     void addUserToEntreprise(UUID userId, UUID entrepriseId);
 	User findByEmailVerificationToken(String token);
 	User findByResetPasswordToken(String token);
-
+	Optional<User> findByCin(String cin);
 }
