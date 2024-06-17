@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-sm-6">
+        <div class="card-box bg-green">
+          <div class="inner">
+            <h3>{{ collection }} TND</h3>
+            <p>Chiffre d'affaires</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-money" aria-hidden="true"></i>
+          </div>
+          <button (click)="onMoneyFilterButtonClick()" class="btn btn-light">{{ getMoneyFilterLabel() }}</button>
+          <a class="card-box-footer" (click)="showTotalMontantTable()">Voir Plus <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card-box bg-blue">
+          <div class="inner">
+            <h3>{{ appelOffresCount }}</h3>
+            <p>Appels d'offres</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-briefcase" aria-hidden="true"></i>
+          </div>
+          <button (click)="onAppelOffresFilterButtonClick()" class="btn btn-light">{{ getAppelOffresFilterLabel() }}</button>
+          <a class="card-box-footer" (click)="showAppelOffresTable()">Voir Plus <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card-box bg-orange">
+          <div class="inner">
+            <h3>{{ entrepriseCount }}</h3>
+            <p>Entreprises</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-building" aria-hidden="true"></i>
+          </div>
+          <button class="btn btn-light" style="opacity:0">B</button>
+          <a class="card-box-footer" [routerLink]="'/listentreprises'">Voir Plus <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card-box bg-red">
+          <div class="inner">
+            <h3>{{ usersCount }}</h3>
+            <p>Utilisateurs</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-users" aria-hidden="true"></i>
+          </div>
+          <button class="btn btn-light" style="opacity:0">B</button>
+          <a class="card-box-footer" [routerLink]="'/users'">Voir Plus <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-container">
+          <h2>Liste des entreprises</h2>
+          <div class="date-selection">
+            <mat-form-field appearance="fill">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" (dateChange)="onDateRangeChange()">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" (dateChange)="onDateRangeChange()">
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="filters">
+            <mat-form-field appearance="fill">
+              <mat-label>Category</mat-label>
+              <mat-select (selectionChange)="onCategoryChange($event.value)">
+                <mat-option *ngFor="let category of categories" [value]="category.id">
+                  {{ category.nomcategorie }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <table class="table table-striped" *ngIf="isTotalMontantTable">
+            <thead>
+              <tr>
+                <th>Logo</th>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Secteur d'activité</th>
+                <th>Ville</th>
+                <th>Siège social</th>
+                <th (click)="toggleSortOrder()" style="cursor: pointer;">
+                  Chiffre d'affaires
+                  <i class="fa" [ngClass]="sortAscending ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entreprise of getPagedData()">
+                <td><img [src]="'data:image/png;base64,' + entreprise.logo" alt="Logo" class="img-thumbnail"></td>
+                <td>{{ entreprise.name }}</td>
+                <td>{{ entreprise.adresse }}</td>
+                <td>{{ entreprise.secteuractivite }}</td>
+                <td>{{ entreprise.ville }}</td>
+                <td>{{ entreprise.siegesociale }}</td>
+                <td>{{ totalMontantMap[entreprise.id] || 0 }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-striped" *ngIf="!isTotalMontantTable">
+            <thead>
+              <tr>
+                <th>Logo</th>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Secteur d'activité</th>
+                <th>Ville</th>
+                <th>Siège social</th>
+                <th (click)="toggleAppelOffresSortOrder()" style="cursor: pointer;">
+                  Appels d'offres
+                  <i class="fa" [ngClass]="appelOffresSortAscending ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entreprise of getPagedData()">
+                <td><img [src]="'data:image/png;base64,' + entreprise.logo" alt="Logo" class="img-thumbnail"></td>
+                <td>{{ entreprise.name }}</td>
+                <td>{{ entreprise.adresse }}</td>
+                <td>{{ entreprise.secteuractivite }}</td>
+                <td>{{ entreprise.ville }}</td>
+                <td>{{ entreprise.siegesociale }}</td>
+                <td>{{ appelOffresCountMap[entreprise.id] || 0 }}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <!-- Paginator -->
+          <mat-paginator [length]="filteredEntreprises.length" [pageSize]="itemsPerPage" [pageSizeOptions]="[3, 5, 10, 20]" (page)="onPageChange($event)">
+          </mat-paginator>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

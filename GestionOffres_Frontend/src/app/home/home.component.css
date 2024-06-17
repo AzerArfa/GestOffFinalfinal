@@ -1,0 +1,100 @@
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+/* styles.css or your component's CSS file */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f0f8ff;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.bg-primary {
+  background-color: #3B3F58 !important;
+}
+
+.bg-light {
+  background-color: #f0f8ff !important;
+}
+
+.btn-outline-light {
+  border-color: #fff;
+  color: #fff;
+  background: transparent;
+}
+
+.btn-outline-light:hover {
+  background: #fff;
+  color: #3B3F58;
+}
+
+.container {
+  padding: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+  border-radius: 8px 8px 0 0;
+}
+
+.card-body {
+  padding: 20px;
+  background-color: #ffffff;
+  color: #333;
+}
+
+.card-footer {
+  background-color: #ffffff;
+  border-top: none;
+}
+
+.btn-outline-dark {
+  border-color: #3bc0c3;
+  color: #3bc0c3;
+  font-weight: 500;
+}
+
+.btn-outline-dark:hover {
+  background: #3bc0c3;
+  color: #ffffff;
+}
+
+.text-center {
+  text-align: center;
+}
+
+mat-form-field {
+  width: 50%;
+}
+
+.custom-paginator .mat-paginator-container {
+  background-color: #f0f8ff !important;
+}
+
+.custom-paginator .mat-paginator-page-size .mat-select-trigger {
+  color: #333 !important;
+}
+
+.custom-paginator .mat-paginator-range-label,
+.custom-paginator .mat-icon-button {
+  color: #333 !important;
+}
+
+.mat-paginator-navigation-previous,
+.mat-paginator-navigation-next,
+.mat-paginator-navigation-first,
+.mat-paginator-navigation-last {
+  background-color: #f0f8ff !important;
+}
+
+
+
+mat-paginator{
+  background-color: #f0f8ff;
+}

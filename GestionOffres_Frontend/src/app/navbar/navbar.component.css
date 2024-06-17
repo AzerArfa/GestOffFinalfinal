@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&subset=devanagari,latin-ext');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
+
+.navbar {
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #3bc0c3;
+}
+
+.navbar-brand:hover {
+  color: #004d40;
+}
+
+.nav-link {
+  font-size: 1rem;
+  color: #333333;
+  margin-right: 1rem;
+}
+
+.nav-link:hover {
+  color: #3bc0c3;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  color: #333333;
+}
+
+.btn-outline-dark {
+  color: #3bc0c3;
+  border-color: #3bc0c3;
+  
+  font-weight: 500;
+}
+
+.btn-outline-dark:hover {
+  color: #ffffff;
+  background-color: #3bc0c3;
+  border-color: #3bc0c3;
+}
+
+.navbar-brand img {
+  height: 40px;
+  width: auto;
+  display: block;
+  transition: all 0.3s ease-out;
+}
+
+.btn-notification {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-notification:hover {
+  opacity: 1;
+}
+
+.btn-notification .fa-bell {
+  color: #3bc0c3;
+  font-size: 20px;
+}
+
+.notification-count {
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-item i {
+  margin-right: 10px;
+}
+
+.mx-3 {
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
+}
+
+.dropdown-item.button {
+  padding: 0.25rem 1rem;
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+}
+
+/* Adjust dropdown menu width */
+.dropdown-menu {
+  width: 300px;
+  max-width: none;
+}
+
+/* Ensure text wraps */
+.dropdown-item.text-wrap {
+  white-space: normal;
+}
+/* Add styles for the new "Voir tout" button */
+.dropdown-item.text-center {
+  cursor: pointer;
+}
+.superadminbrand:hover{
+  cursor:pointer
+}
+
+.notification-item {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  justify-content: space-between;
+  padding: 0.5rem; /* Add some padding for better spacing */
+}
+
+.btn-clear {
+  align-self: flex-start; /* Align the button to the top of the container */
+}
+
+.btn-clear i {
+  font-size: 1rem; /* Adjust the size of the icon */
+  color: #da2436; /* Use a red color for the clear button icon */
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: top;
+  width: 100%; /* Ensures the link utilizes the full width for better click area */
+}
+
+.dropdown-item i {
+  min-width: 25px; /* Ensures icons don't shift when text changes */
+  margin-right: 10px; /* Adjust space between icon and text */
+}
+
+
